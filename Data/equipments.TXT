@@ -1,0 +1,2 @@
+login: player1 helmet: 000 shield: 000 gloves: 000 shoes: 000 weapon: 000 necklace: 000 belt: 206 ring: 204 luckyitem: 205 slot1: 000 slot2: 000 slot3: 000 slot4: 000 slot5: 210 slot6: 000 slot7: 000 slot8: 000 shop1: 000 shop2: 211 shop3: 212 shop4: 213 shop5: 214 shop6: 215
+login: player2 helmet: 000 shield: 130 gloves: 000 shoes: 128 weapon: 000 necklace: 000 belt: 127 ring: 000 luckyitem: 126 slot1: 000 slot2: 000 slot3: 132 slot4: 000 slot5: 125 slot6: 000 slot7: 131 slot8: 000 shop1: 179 shop2: 180 shop3: 181 shop4: 182 shop5: 183 shop6: 184
