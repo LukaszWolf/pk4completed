@@ -1,0 +1,2 @@
+login: player1 pass: haslo image: Textures/test.png strenght: 329 dexterity: 400 intelligence: 1644 durability: 1681 luck: 62 level: 10 gold: 1722 xp: 273
+login: player2 pass: haslo image: Textures/test2.png strenght: 115 dexterity: 30 intelligence: 28 durability: 83 luck: 52 level: 113 gold: 4694 xp: 105

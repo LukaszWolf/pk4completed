@@ -1,0 +1,6 @@
+login: player2 number: 1 name: TajemnySkarb gold: 78 xp: 74 duration: 153 start: 0
+login: player2 number: 2 name: CzarnyLas gold: 76 xp: 66 duration: 143 start: 0
+login: player2 number: 3 name: CichaDolina gold: 54 xp: 82 duration: 137 start: 0
+login: player1 number: 1 name: ZaginionaWioska gold: 109 xp: 65 duration: 175 start: 0
+login: player1 number: 2 name: StaryZamek gold: 51 xp: 92 duration: 144 start: 0
+login: player1 number: 3 name: ZlotaJaskinia gold: 31 xp: 15 duration: 47 start: 0

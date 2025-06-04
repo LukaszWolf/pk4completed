@@ -1,0 +1,6 @@
+login: player2 number: 1 name: Przeciwnik1 level: 123 strength: 147 dexterity: 119 intelligence: 74 durability: 197 luck: 49 reward: 59 image: Textures/test2.png
+login: player2 number: 2 name: Przeciwnik2 level: 107 strength: 185 dexterity: 123 intelligence: 73 durability: 201 luck: 49 reward: 59 image: Textures/test2.png
+login: player2 number: 3 name: Przeciwnik3 level: 105 strength: 144 dexterity: 127 intelligence: 50 durability: 188 luck: 52 reward: 56 image: Textures/test2.png
+login: player1 number: 1 name: Przeciwnik1 level: 9 strength: 389 dexterity: 397 intelligence: 1418 durability: 1907 luck: 76 reward: 4 image: Textures/test.png
+login: player1 number: 2 name: Przeciwnik2 level: 9 strength: 365 dexterity: 388 intelligence: 1866 durability: 1450 luck: 85 reward: 4 image: Textures/test.png
+login: player1 number: 3 name: Przeciwnik3 level: 10 strength: 304 dexterity: 413 intelligence: 1692 durability: 1511 luck: 79 reward: 5 image: Textures/test.png
