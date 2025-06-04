@@ -2,12 +2,7 @@
 #include "Game.h"
 #include <iostream>
 //TODO
-
-// filesystem do sprawdzania czy sa wszystkie tekstury pliki itp i czy zawartosc plikow jest okej np w konstruktorze game,
-// wyrzucanie wyjatków jak nie, regexy tez tam
-// getline przez wszystkie linijki i regex sprawdzajacy czy sie linijka zgadza albo czy pusta
-// map <Path, bool istnieje> i potem przez mape przeleciec i sprawdzic czy istnieje wszystko
-// 
+ 
 // ranges 
 // 
 // tla wygenerowane z czata podczas trwania misji i napis nazwy misji 

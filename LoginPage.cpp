@@ -127,7 +127,7 @@ void LoginPage::addAccountToAvailable(std::string stats, std::string password) {
         return;
     }
     std::string login = matches[1];
-    std::string image = "Textures/"+ std::string(matches[3]);
+    std::string image = matches[3];
     int str = std::stoi(matches[4]);
     int dex = std::stoi(matches[5]);
     int intel = std::stoi(matches[6]);

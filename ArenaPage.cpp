@@ -104,16 +104,19 @@ void ArenaPage::refreshEnemies(bool generate_new_enemies) {
     std::vector<sf::Vector2f> positions = {
         {600.f, 200.f}, {1050.f, 200.f}, {1500.f, 200.f}
     };
+    std::vector < std::string > image_paths{
+        "Textures/test.png", "Textures/test2.png"
+    };
     if(generate_new_enemies){
         static std::mt19937 rng{ std::random_device{}() };
-        // static std::uniform_int_distribution<int> time_dist(30, 180);
+        static std::uniform_int_distribution<int> image_id(0, 1);
         static std::uniform_real_distribution<float> stat_multiplier(0.8f, 1.2f);
         static std::uniform_real_distribution<float> level_multiplier(0.9f, 1.1f);
 
        for (int i = 0; i < 3; ++i) {
             Enemy* enemy = new Enemy(
             "Przeciwnik" + std::to_string(i + 1),
-            "Textures/test2.png", loggedInUser->getStrength() * stat_multiplier(rng),
+            image_paths[image_id(rng)], loggedInUser->getStrength() * stat_multiplier(rng),
             loggedInUser->getDexterity() * stat_multiplier(rng),
             loggedInUser->getIntelligence() * stat_multiplier(rng),
             loggedInUser->getConstitution() * stat_multiplier(rng),

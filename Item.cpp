@@ -30,7 +30,7 @@ Item::Item(int item_id) : id(0), strength(0), dexterity(0), intelligence(0), dur
         if (std::regex_search(line, match, pattern)) {
             this->id = item_id;
 
-            std::string imagePath = "Textures/"+std::string( match[1]);
+            std::string imagePath = "Textures/"+ std::string(match[1]);
             if (!this->texture.loadFromFile(imagePath)) {
                 std::cerr << "Nie udalo sie wczytac textury: " << imagePath << std::endl;
             }
