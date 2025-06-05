@@ -7,7 +7,7 @@
 
 class DescriptionBox {
 public:
-    DescriptionBox(const sf::Font& font, unsigned int charSize = 14 );
+    DescriptionBox(const sf::Font& font, unsigned int charSize = 14);
     void setItem(Item* item);
     void setPosition(const sf::Vector2f& pos);
     void setVisible(bool show) { visible = show; }
@@ -27,6 +27,5 @@ private:
     std::string typeToString(ItemType t) const;
 };
 
-#endif // DESCRIPTIONBOX_H
-
+#endif 
 

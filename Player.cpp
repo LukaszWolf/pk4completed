@@ -42,7 +42,7 @@ void Player::upgradeIntelligence()
 	this->setGold(gold - 1);
 	game_ref.saveToFileStats();
 }
-void Player::upgradeConstitution()
+void Player::upgradeDurability()
 {
 	this->base_durability++;
 	int cost = this->level;
@@ -66,7 +66,7 @@ float Player::attack() {
 }
 
 int Player::calculateHP() {
-	return getConstitution()*level;
+	return getDurability()*level;
 }
 
 int Player::calculateDamage() {
@@ -141,7 +141,6 @@ Enemy* Player::getArenaEnemy(int num) const
 	}
 }
 void Player::setQuests(std::vector<Quest*>& newQuests) {
-	// Najpierw zwolnij stare questy, jeśli zarządzasz pamięcią:
 	try
 	{
 		for (auto q : quests) {
@@ -149,36 +148,26 @@ void Player::setQuests(std::vector<Quest*>& newQuests) {
 		}
 		quests.clear();
 
-		// Kopiuj wskaźniki z newQuests (nie twórz nowych obiektów)
 		for (auto q : newQuests) {
 			quests.push_back(q);
 		}
 	}
 	catch (const std::exception& e)
 	{
-		std::cerr << "Wyjątek podczas kopiowania questów: " << e.what() << std::endl;
+		std::cout << "Wyjatek podczas kopiowania questoww: " << e.what() << std::endl;
 	}
 
 }
 
 void Player::setArenaEnemies(std::vector<Enemy*>& newEnemies) {
-	// Najpierw zwolnij stare questy, jeśli zarządzasz pamięcią:
 	try {
-		//for (auto& enemy : arena_enemies) {
-		//	if (enemy != nullptr) {
-		//		delete enemy;
-		//		enemy = nullptr;
-		//	}
-		//}
 		arena_enemies.clear();
-
-		// Teraz już wewnątrz try
 		for (auto enemy : newEnemies) {
 			arena_enemies.push_back(enemy);
 		}
 	}
 	catch (const std::exception& e) {
-		std::cerr << "Wyjątek podczas kopiowania przeciwników: " << e.what() << std::endl;
+		std::cout << "Wyjatek podczas kopiowania przeciwnikow: " << e.what() << std::endl;
 	}
 
 }
@@ -187,11 +176,10 @@ void Player::setArenaEnemies(std::vector<Enemy*>& newEnemies) {
 
 void Player::loadQuestsFromFile() {
 	is_quest_in_progress = false;
-//	std::cout << "ladowanie questow: " << this->getName() << std::endl;
 	int i = 1;
 	std::ifstream file("Data/quests.txt");
 	if (!file.is_open()) {
-		std::cerr << "Nie można otworzyć pliku quests.txt\n";
+		//std::cout << "Nie można otworzyć pliku quests.txt\n";
 		return;
 	}
 
@@ -208,11 +196,7 @@ void Player::loadQuestsFromFile() {
 			int reward_xp = std::stoi(match[5]);
 			int duration = std::stoi(match[6]);
 			long long start = std::stoll(match[7]);
-			//std::cout << reward << " " << duration << " " << start << std::endl;
 
-
-					//dopasowanie tekstu questow do obrazu
-			//	std::cout << "powinien sie stworzyc quest"<<std::endl;
 			float posX = 440 + i * 300;
 			float posY = 330;
 			Quest* q = new Quest(quest_name, "desc", duration, reward_gold,reward_xp, {posX,posY});
@@ -228,18 +212,9 @@ void Player::loadQuestsFromFile() {
 			quests.push_back(q);
 			
 		}
-		else {
-		std:: cout << "nie";
-		}
+
 	}
-	/*if (quests.size() < 3) {
-		throw std::runtime_error("Zbyt malo questow dla gracza: " + this->getName());
-	}
-	else {*/
-		//quest1 = quests[0];
-		//quest2 = quests[1];
-		//quest3 = quests[2];
-	//}
+
 }
 
 void Player::saveQuestsToFile() {
@@ -282,7 +257,6 @@ void Player::saveArenaEnemiesToFile() {
 	std::vector<std::string> lines;
 	std::string line;
 
-	// Zachowaj dane innych graczy
 	while (std::getline(file_in, line)) {
 		if (line.find("login: " + this->getName()) != 0) {
 			lines.push_back(line);
@@ -295,7 +269,6 @@ void Player::saveArenaEnemiesToFile() {
 		file_out << l << "\n";
 	}
 
-	// Zapisz przeciwników arenowych
 	for (size_t i = 0; i < arena_enemies.size(); ++i) {
 		Enemy* e = arena_enemies[i];
 		file_out << "login: " << this->getName()
@@ -305,7 +278,7 @@ void Player::saveArenaEnemiesToFile() {
 			<< " strength: " << e->getStrength()
 			<< " dexterity: " << e->getDexterity()
 			<< " intelligence: " << e->getIntelligence()
-			<< " durability: " << e->getConstitution()
+			<< " durability: " << e->getDurability()
 			<< " luck: " << e->getLuck()
 			<< " reward: " << e->getRewardGold()
 			<< " image: " << e->getImgName()
@@ -352,7 +325,7 @@ void Player::loadArenaEnemiesFromFile() {
 			arena_enemies.push_back(enemy);
 			i++;
 		}
-		else{ std::cout << "NIMA" << std::endl; }	
+		
 	}
 
 	file.close();
@@ -378,37 +351,12 @@ void Player::setItem(const std::string& slot_name, Item* item) {
 }
 
 
-void Player::printEquipment() {
-    //std::cout << "Ekwipunek gracza:\n";
-    //for (const  auto &pair : equipment) {
-    //    if (pair.second) {
-    //        std::cout << pair.first << " -> Przedmiot ID: "
-				//
-    //            //<< "id:" << pair.second->getId()
-    //            ////<<"texture: "<<this->match[1]
-    //            //<< "name:" << pair.second->getName()
-    //            //<< "strenght:" << pair.second->getStrenght()
-    //            //<< "dext:" << pair.second->getDexterity()
-    //            //<< "inte:" << pair.second->getIntelligence()
-    //            //<< "constit:" << pair.second->getConstitution()
-    //            //<< "luck:" << pair.second->getLuck() << std::endl;
-    //   // }
-    //    //else {
-    //     //   std::cout << pair.first << " -> brak\n";
-    //    }
-    //}
-}
-
-
 void Player::updateEquipment(std::string filename)
 {
 	std::ifstream file(filename);
 	if (!file) {
-		std::cout << "nie udalo sie otworzyc pliku";
+	//	std::cout << "nie udalo sie otworzyc pliku";
 		return;
-	}
-	else {
-		std::cout << "otwarto plik " << std::endl;
 	}
 	std::string line;
 	bool found = false;
@@ -478,7 +426,7 @@ void Player::updateEquipment(std::string filename)
 		
 	}
 	if (!found) {
-		std::cout << "nie udalo sie wczytac ekwipunku";
+	//	std::cout << "nie udalo sie wczytac ekwipunku";
 	}
 }
 void Player::setQuestInProgress(bool active){
@@ -528,7 +476,7 @@ void Player::setCurrentXP(int amount)
 		this->current_xp = amount;
 	}
 	else {
-		current_xp = amount - xp_to_next_level; // przeskok na kolejny level
+		current_xp = amount - xp_to_next_level; 
 		level++;
 	}
 
@@ -541,14 +489,12 @@ void Player::setRefreshQuestsflag(bool refresh)
 
 void Player::printStats()
 {
-	std::cout << "str: " << getStrength() << ", dex: " << getDexterity() << ", int:" << getIntelligence() << ", con:" << getConstitution() << ", lck:" << getLuck() << std::endl;
+	std::cout << "str: " << getStrength() << ", dex: " << getDexterity() << ", int:" << getIntelligence() << ", con:" << getDurability() << ", lck:" << getLuck() << std::endl;
 }
 
 void Player::setGold(int amount)
 {
-	std::cout << "[setGold] previous gold: " << this->gold << ", new: " << amount << std::endl;
 	this->gold = amount;
-	std::cout << "gold: " << gold<<std::endl;
 	game_ref.setStatChangedFlag(true);
 }
 
@@ -588,7 +534,7 @@ int Player::getIntelligence()
 	return total;
 }
 
-int Player::getConstitution()
+int Player::getDurability()
 {
 	int total = base_durability;
 	std::vector<std::string> slots = { "helmet","shield","gloves","shoes","weapon","necklace","belt","ring","luckyitem" };

@@ -42,7 +42,7 @@ private:
     Button* login_button;
     TextBox* username_text_box;
     TextBox* password_text_box;
-    
+
 
     std::vector<Button*> account_btns;
     std::list<Player*> insertion_order;
@@ -101,9 +101,9 @@ private:
     ItemSlot* shop_slot5;
     ItemSlot* shop_slot6;
     Button* refresh_shop_btn;
-   
+
     std::vector<ItemSlot*> allSlots;
-    ItemSlot* dragSource = nullptr;
+    ItemSlot* dragSource;
     bool itemSwapped;
 
     Button* upgrade_strenght_btn;
@@ -145,7 +145,7 @@ public:
     void refreshShop();
 };
 
-class QuestPage: public Page{
+class QuestPage : public Page {
 private:
     Player* loggedInUser;
     NavBar* navBar;
@@ -154,8 +154,6 @@ private:
     Button* activate_quest1_btn;
     Button* activate_quest2_btn;
     Button* activate_quest3_btn;
-    
-  //  std::vector<Quest*>quests;
 public:
     QuestPage(Game& game);
     ~QuestPage();
@@ -164,17 +162,17 @@ public:
     void handleEvents(sf::Event event, sf::RenderWindow& window) override;
     void activateMission(int quest_num);
     void refreshQuestsForPlayer();
-    //Quest* getQuest(int num);
 
 };
 
-class QuestInProgressPage: public Page{
+class QuestInProgressPage : public Page {
 private:
     Player* loggedInUser;
     NavBar* navBar;
     ContentArea* content_area;
     Quest* active_quest;
     sf::Text time_left_text;
+    sf::Text skip_price_text;
     sf::Font font;
     TimeLoadingBar* time_bar;
     Button* cancel_quest_btn;
@@ -194,47 +192,29 @@ public:
 
 class ArenaPage : public Page {
 private:
-    Player* loggedInUser;                    // currently logged‐in player
-    NavBar* navBar;                          // left‐side navigation bar
-    ContentArea* content_area;               // main content background
-    Button* fight_button1;                   // button to fight enemies[0]
-    Button* fight_button2;                   // button to fight enemies[1]
-    Button* fight_button3;                   // button to fight enemies[2]
+    Player* loggedInUser;
+    NavBar* navBar;
+    ContentArea* content_area; 
+    Button* fight_button1;                  
+    Button* fight_button2;
+    Button* fight_button3;                   
 
-    sf::Font font;                           // font (if needed for extra text)
-    std::vector<Enemy*> enemies;             // raw Enemy* loaded from Player
-    std::vector<EnemyDisplay*> enemyDisplays; // GUI objects for each Enemy*
-
-    // Helper to delete all existing EnemyDisplay* and clear the vector
-    
+    sf::Font font;                          
+    std::vector<Enemy*> enemies;             
+    std::vector<EnemyDisplay*> enemyDisplays; 
 
 public:
     ArenaPage(Game& game);
     ~ArenaPage();
 
-    // Called by Game::setLoggedInPlayer(...) so that, when a new Player logs in,
-    // ArenaPage knows which enemies to pull and display.
     void setLoggedInUser(Player* player);
-
-    // Renders navBar, content_area, then every EnemyDisplay, then fight buttons.
     void draw(sf::RenderWindow& window) override;
-
-    // Handles input: NavBar clicks, content_area clicks, plus fight_button clicks.
     void handleEvents(sf::Event event, sf::RenderWindow& window) override;
-
-    
-    // Called when a “fight” button is clicked; implement your fight logic here.
     void startFight(Enemy* enemy);
-
-    // Return the i‐th Enemy* (or nullptr if out of range)
     Enemy* getEnemy(int num);
 
     void refreshEnemies(bool generate_new_enemies);
     void clearEnemyDisplays();
-    // If you want to remove all old EnemyDisplay objects manually, call this.
-    // (clearEnemyDisplays() is private; this is the public interface.)
-    // You can use it anywhere—e.g., before calling createEnemyDisplays().
-    //void clearEnemyDisplays(); // Already declared as private
 };
 class FightPage : public Page {
 private:
@@ -254,7 +234,6 @@ private:
     float player_max_hp;
     sf::Text player_hp_text;
     sf::Text enemy_hp_text;
-    // nowe pola logiki walki
     bool fight_initialized = false;
     bool playerTurn = true;
     bool enemyTurnScheduled = false;
@@ -266,13 +245,11 @@ public:
 
     void draw(sf::RenderWindow& window) override;
     void handleEvents(sf::Event event, sf::RenderWindow& window) override;
-
     void setEnemy(Enemy* enemy);
     Enemy* getEnemy();
     void setLoggedInUser(Player* player);
     void setPlayerAndEnemyImg();
     void initFight();
-    void Fight(sf::RenderWindow& window);
     Player* getLoggedInUser();
 };
 

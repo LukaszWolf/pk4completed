@@ -5,12 +5,6 @@
 #include <SFML/Graphics.hpp>
 #include "Button.h"
 
-//enum class CharacterClass {
-//    WARRIOR,
-//    MAGE,
-//    SCOUT
-//};
-
 class Character {
 protected:
     std::string name;
@@ -25,8 +19,8 @@ protected:
 public:
 
     Character(std::string nam, std::string img, int strength, int dexterity, int intelligence, int durability,
-        int luck,  int level);
-    virtual ~Character() = default; 
+        int luck, int level);
+    virtual ~Character() = default;
 
     virtual float attack() = 0;
     virtual int calculateHP() = 0;
@@ -39,7 +33,7 @@ public:
     int getBaseStrenght() const;
     int getBaseDexterity() const;
     int getBaseIntelligence() const;
-    int getBaseConstitution() const;
+    int getBaseDurability() const;
     int getBaseLuck() const;
 
     std::string getImgName() const;
@@ -48,7 +42,7 @@ public:
     virtual int getStrength() = 0;
     virtual int getDexterity() = 0;
     virtual int getIntelligence() = 0;
-    virtual int getConstitution() = 0;
+    virtual int getDurability() = 0;
     virtual int getLuck() = 0;
     virtual int getArmor() = 0;
     sf::Texture& getCharacterTexture();

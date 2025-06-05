@@ -19,7 +19,7 @@ private:
     ArenaPage* arena_screen;
     FightPage* fight_screen;
     QuestInProgressPage* quest_in_progress_screen;
-    std::vector<Player*> available_accounts; // Tablica wskaŸników do dostepnych kont do szybkiego zalogowania
+    std::vector<Player*> available_accounts; 
     Player* loggedInPlayer;
     bool was_account_added;
     bool item_changed_flag;
@@ -33,7 +33,7 @@ private:
 public:
     Game();
     ~Game();
-    sf::Vector2u getWindowSize() const;// u to unsigned int
+    sf::Vector2u getWindowSize() const;
     bool running() const;
     void changePage(GameState new_page);
     void pollEvents();

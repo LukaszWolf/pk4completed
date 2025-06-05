@@ -15,7 +15,7 @@ private:
     int reward_xp;
     bool isActivated;
     bool isCompletedFlag;
-    int durationSeconds; 
+    int durationSeconds;
     sf::Vector2f text_pos;
 
     std::chrono::system_clock::time_point startTime;
@@ -56,4 +56,4 @@ public:
     sf::Text& getRewardText();
 };
 
-#endif // QUEST_H
+#endif

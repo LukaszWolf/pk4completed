@@ -26,9 +26,9 @@ public:
     int getStrength() override;
     int getDexterity() override;
     int getIntelligence() override;
-    int getConstitution() override;
+    int getDurability() override;
+    int getArmor() override;
     int getLuck() override;
-    int getArmor() override; ///raczej nie bedzie uzyte
     int getRewardGold() const;
 };
 

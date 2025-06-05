@@ -17,23 +17,45 @@ float Enemy::attack() {
     float damage = static_cast<float>(calculateDamage());
     return damage*damage_multiplier(rng);
 }
-int Enemy::calculateHP() { return getConstitution() * level; }
-int Enemy::calculateDamage() { return getStrength() * level; }
-int Enemy::calculateEvasion() { return getDexterity() * level; }
-int Enemy::calculateResistance() { return getArmor() * level * 0.1; }
-int Enemy::calculateDamageReduction() { return std::floor(getIntelligence() * level / 50); }
-double Enemy::calculateCritChance() { return std::min(50.0, getLuck() * 0.05); }
+int Enemy::calculateHP() {
+    return getDurability() * level;
+}
+int Enemy::calculateDamage() {
+    return getStrength() * level;
+}
+int Enemy::calculateEvasion() {
+    return getDexterity() * level;
+}
+int Enemy::calculateResistance() {
+    return getArmor() * level * 0.1;
+}
+int Enemy::calculateDamageReduction() {
+    return std::floor(getIntelligence() * level / 50); 
+}
+double Enemy::calculateCritChance() {
+    return std::min(50.0, getLuck() * 0.05); 
+}
 
-int Enemy::getStrength() { return base_strength; }
-int Enemy::getDexterity() { return base_dexterity; }
-int Enemy::getIntelligence() { return base_intelligence; }
-int Enemy::getConstitution() { return base_durability; }
-int Enemy::getLuck() { return base_luck; }
-
+int Enemy::getStrength() {
+    return base_strength; 
+}
+int Enemy::getDexterity() {
+    return base_dexterity; 
+}
+int Enemy::getIntelligence() {
+    return base_intelligence;
+}
+int Enemy::getDurability() {
+    return base_durability; 
+}
 int Enemy::getArmor()
 {
     return 0;
 }
+int Enemy::getLuck() {
+    return base_luck; 
+}
 
-
-int Enemy::getRewardGold() const { return reward_gold; }
+int Enemy::getRewardGold() const {
+    return reward_gold; 
+}

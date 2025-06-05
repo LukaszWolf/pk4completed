@@ -33,7 +33,7 @@ int Character::getBaseIntelligence() const
 {
     return base_intelligence;
 }
-int Character::getBaseConstitution() const
+int Character::getBaseDurability() const
 {
     return base_durability;
 }

@@ -17,7 +17,7 @@ private:
     Game& game_ref;
 
 public:
-    NavBar(float width, float height,Game&game);
+    NavBar(float width, float height, Game& game);
     ~NavBar();
 
     void draw(sf::RenderWindow& window);

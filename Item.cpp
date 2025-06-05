@@ -5,7 +5,7 @@ Item::Item(int item_id) : id(0), strength(0), dexterity(0), intelligence(0), dur
 
     std::ifstream file("Data/Items.txt");
     if (!file.is_open()) {
-        std::cerr << "Nie mozna otworzyc pliku items.txt" << std::endl;
+     //   std::cout << "Nie mozna otworzyc pliku items.txt" << std::endl;
         return;
     }
 
@@ -30,9 +30,9 @@ Item::Item(int item_id) : id(0), strength(0), dexterity(0), intelligence(0), dur
         if (std::regex_search(line, match, pattern)) {
             this->id = item_id;
 
-            std::string imagePath = "Textures/"+ std::string(match[1]);
+            std::string imagePath =match[1];
             if (!this->texture.loadFromFile(imagePath)) {
-                std::cerr << "Nie udalo sie wczytac textury: " << imagePath << std::endl;
+               // std::cout << "Nie udalo sie wczytac textury: " << imagePath << std::endl;
             }
             else {
                 this->sprite.setTexture(this->texture);
@@ -71,7 +71,7 @@ Item::Item(int id,const std::string& texturePath,const std::string& name,ItemTyp
     name(name),type(type),strength(strength),dexterity(dexterity),intelligence(intelligence),durability(durability),
     luck(luck),armor(armor),price(price){
     if (!this->texture.loadFromFile(texturePath)) {
-        std::cerr << "Nie udalo sie wczytac textury: " << texturePath << std::endl;
+     //   std::cout << "Nie udalo sie wczytac textury: " << texturePath << std::endl;
     }
     else {
         this->sprite.setTexture(this->texture);
@@ -93,9 +93,9 @@ Item::Item(int id,const std::string& texturePath,const std::string& name,ItemTyp
             << " armor: " << armor
             << "\n";
     }
-    else {
-        std::cout << "Nie mozna otworzyc pliku Items.txt do dopisania\n";
-    }
+   // else {
+    //    std::cout << "Nie mozna otworzyc pliku Items.txt do dopisania\n";
+    //}
 }
 std::string Item::ItemTypeToString(ItemType t) {
     switch (t) {

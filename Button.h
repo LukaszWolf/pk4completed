@@ -46,20 +46,20 @@ public:
 class ItemSlot : public Button {
 private:
     Item* current_item;
-    ItemType allowed_item_type; 
+    ItemType allowed_item_type;
     bool isItemDragged;
     bool isDragSource;
-    sf::Vector2i last_mouse_pos;   
+    sf::Vector2i last_mouse_pos;
     std::string name_id;
 public:
-    ItemSlot(std::string slot_name , sf::Vector2f position, sf::Vector2f size, ItemType item_type, std::string texture_file_name_default, std::function<void()>action, Item* curr_item); //eq
-    
+    ItemSlot(std::string slot_name, sf::Vector2f position, sf::Vector2f size, ItemType item_type, std::string texture_file_name_default, std::function<void()>action, Item* curr_item); //eq
+
     void draw(sf::RenderWindow& window) override;
     void handleEvents(sf::Vector2i mouse_pos, sf::Event event);
     void tryStartDrag(const sf::Vector2i& mousePos, const sf::Event& event);
     void cancelDrag();
-    bool endDrag(const sf::Vector2i& mousePos, const sf::Event& event, ItemSlot*source, Player*loggedInUSer);
-    void swapItems(ItemSlot* source, ItemSlot* target, Player*loggedInUser);
+    bool endDrag(const sf::Vector2i& mousePos, const sf::Event& event, ItemSlot* source, Player* loggedInUSer);
+    void swapItems(ItemSlot* source, ItemSlot* target, Player* loggedInUser);
 
     std::string getNameID() const;
     ItemType getAllowedItemType() const;
@@ -68,7 +68,7 @@ public:
     Item* getCurrentItem() const;
     bool getIsItemDragged() const;
     void setIsItemDragged(bool dragging);
-    void moveItem(sf::Vector2f&diff);
+    void moveItem(sf::Vector2f& diff);
     sf::FloatRect getGlobalBounds() const;
 };
 

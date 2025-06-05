@@ -8,9 +8,9 @@ QuestPage::QuestPage(Game& game) : Page(game) {
     this->navBar = new NavBar(400, 1080, game);
     this->content_area = new ContentArea(1520, 1080, game, "Textures/quest_menu_background.png", 400, 0);
     loggedInUser = nullptr;
-    this->activate_quest1_btn = new Button({ 500, 800 }, { 324, 80 }, "Textures/arena_button.png", [this]() {activateMission(1); });
-    this->activate_quest2_btn = new Button({ 800, 800 }, { 324, 80 }, "Textures/arena_button.png", [this]() {activateMission(2); });
-    this->activate_quest3_btn = new Button({ 1100, 800 }, { 324, 80 }, "Textures/arena_button.png", [this]() {activateMission(3); });
+    this->activate_quest1_btn = new Button({ 730, 320 }, { 224, 85 }, "Textures/start_quest_btn.png", [this]() {activateMission(1); });
+    this->activate_quest2_btn = new Button({ 1034, 320 }, { 224, 85 }, "Textures/start_quest_btn.png", [this]() {activateMission(2); });
+    this->activate_quest3_btn = new Button({ 1338, 320 }, { 224, 85 }, "Textures/start_quest_btn.png", [this]() {activateMission(3); });
 }
 
 QuestPage::~QuestPage() {
@@ -28,7 +28,7 @@ void QuestPage::setLoggedInUser(Player*player){
 void QuestPage::draw(sf::RenderWindow& window) {
     if (loggedInUser && loggedInUser->getIsQuestInProgress()) {
         game_ref.changePage(GameState::MISSION_ACTIVE);
-        return; // uniknij dalszego rysowania
+        return; 
     }
     if (navBar != nullptr) {
         navBar->draw(window);
@@ -37,15 +37,15 @@ void QuestPage::draw(sf::RenderWindow& window) {
         content_area->draw(window);
     }
     if (loggedInUser and loggedInUser->getQuest(0) and loggedInUser->getQuest(1) and loggedInUser->getQuest(2)) {
-        window.draw(loggedInUser->getQuest(0)->getNameText());
+       // window.draw(loggedInUser->getQuest(0)->getNameText());
         window.draw(loggedInUser->getQuest(0)->getTimeText());
         window.draw(loggedInUser->getQuest(0)->getRewardText());
 
-        window.draw(loggedInUser->getQuest(1)->getNameText());
+        //window.draw(loggedInUser->getQuest(1)->getNameText());
         window.draw(loggedInUser->getQuest(1)->getTimeText());
         window.draw(loggedInUser->getQuest(1)->getRewardText());
 
-        window.draw(loggedInUser->getQuest(2)->getNameText());
+        //window.draw(loggedInUser->getQuest(2)->getNameText());
         window.draw(loggedInUser->getQuest(2)->getTimeText());
         window.draw(loggedInUser->getQuest(2)->getRewardText());
     }
@@ -65,11 +65,8 @@ void QuestPage::handleEvents(sf::Event event, sf::RenderWindow& window) {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     
     if ( loggedInUser->getIsQuestInProgress()) {
-       // loggedInUser->loadQuestsFromFile();
         game_ref.changePage(GameState::MISSION_ACTIVE);
-
     }
-
     if (navBar != nullptr) {
         navBar->handleEvents(event, window);
     }
@@ -111,8 +108,6 @@ void QuestPage::activateMission(int quest_num) {
             loggedInUser->loadQuestsFromFile();
             game_ref.changePage(GameState::MISSION_ACTIVE);
             break;
-        default:
-            std::cout << "Wrong quest number";
         }
     }
     catch (const std::out_of_range &e)
@@ -125,8 +120,8 @@ void QuestPage::refreshQuestsForPlayer() {
     if (!loggedInUser) return;
 
     static std::mt19937 rng{ std::random_device{}() };
-    static std::uniform_int_distribution<int> time_dist(30, 180);
-    static std::uniform_real_distribution<float> multiplier_dist(0.3f, 0.7f);
+    static std::uniform_int_distribution<int> time(30, 180);
+    static std::uniform_real_distribution<float> multiplier(0.3f, 0.7f);
 
     std::unordered_map<int, std::string> quest_names = {
         {1, "CzarnyLas"},
@@ -138,7 +133,6 @@ void QuestPage::refreshQuestsForPlayer() {
         {7, "CichaDolina"}
     };
 
-    // Lista dostêpnych ID nazw questów
     std::vector<int> available_ids = { 1, 2, 3, 4, 5, 6, 7 };
 
     std::vector<Quest*> quests;
@@ -150,14 +144,13 @@ void QuestPage::refreshQuestsForPlayer() {
     for (int i = 0; i < 3; ++i) {
         if (available_ids.empty()) break;
 
-        // Losujemy indeks w dostêpnych ID
-        std::uniform_int_distribution<int> dist_index(0, (int)available_ids.size() - 1);
-        int randomIndex = dist_index(rng);
+        std::uniform_int_distribution<int> index(0, (int)available_ids.size() - 1);
+        int randomIndex = index(rng);
         int id = available_ids[randomIndex];
         available_ids.erase(available_ids.begin() + randomIndex);
 
-        int duration = time_dist(rng);
-        float gold_multiplier = multiplier_dist(rng);
+        int duration = time(rng);
+        float gold_multiplier = multiplier(rng);
         int rewardGold = static_cast<int>(duration * gold_multiplier);
         int rewardXP = static_cast<int>(duration * (1.0f - gold_multiplier));
 

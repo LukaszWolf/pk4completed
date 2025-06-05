@@ -10,7 +10,7 @@ Quest::Quest(const std::string& name, const std::string& description, int durati
     endTime = std::chrono::system_clock::now() + std::chrono::seconds(durationSeconds);
     sf::Font font;
     if (!font.loadFromFile("Fonts/RodrigoTypo - Tobi Pro ExtraBold.otf")) {
-        std::cout << "Nie udalo sie wczytac tekstury!" << std::endl;
+     //   std::cout << "Nie udalo sie wczytac tekstury!" << std::endl;
     }
     else{
     text_font = font;
@@ -24,27 +24,24 @@ Quest::Quest(const std::string& name, const std::string& description, int durati
     timeText.setFont(text_font);
     timeText.setCharacterSize(40);
     timeText.setFillColor(sf::Color::Black);
-   // posY += 130.f;
     timeText.setPosition({ text_pos.x,text_pos.y+130.f});
 
     rewardText.setFont(text_font);
     rewardText.setCharacterSize(40);
     rewardText.setFillColor(sf::Color(69,45,6));
-    //posY += 150.f;
     rewardText.setPosition({ text_pos.x,text_pos.y + 280.f });
 
     updateText();
 }
 
 
-// Konstruktor kopiuj¹cy
+
 Quest::Quest(const Quest& other)
     : name(other.name), description(other.description), reward_gold(other.reward_gold),
     reward_xp(other.reward_xp), isActivated(other.isActivated), isCompletedFlag(other.isCompletedFlag),
     durationSeconds(other.durationSeconds), startTime(other.startTime), endTime(other.endTime),
-    text_font(other.text_font), text_pos(other.text_pos) // mo¿e wymagaæ specjalnego podejœcia
+    text_font(other.text_font), text_pos(other.text_pos) 
 {
-    // Inicjalizuj sf::Text ponownie, bo kopiowanie fontów i tekstów SFML mo¿e byæ z³o¿one
     nameText = other.nameText;
     timeText = other.timeText;
     rewardText = other.rewardText;
@@ -60,19 +57,16 @@ Quest::Quest(const Quest& other)
     timeText.setFont(text_font);
     timeText.setCharacterSize(40);
     timeText.setFillColor(sf::Color::Black);
-    //posY += 130.f;
     timeText.setPosition({ text_pos.x,text_pos.y+130.f });
 
     rewardText.setFont(text_font);
     rewardText.setCharacterSize(40);
     rewardText.setFillColor(sf::Color(69, 45, 6));
-    //posY += 150.f;
     rewardText.setPosition({ text_pos.x,text_pos.y+280.f });
 
     updateText();
 }
 
-// Operator przypisania (opcjonalnie)
 Quest& Quest::operator=(const Quest& other) {
     if (this != &other) {
         name = other.name;
@@ -161,7 +155,7 @@ int Quest::getDurationSeconds() const
 
 void Quest::updateText() {
     timeText.setString("Czas misji\n" + getFormattedTimeLeft());
-    rewardText.setString("Nagroda\n" + std::to_string(reward_gold) + "\n" + std::to_string(reward_xp));
+    rewardText.setString("Nagroda:\n" + std::to_string(reward_gold) + "\n" + std::to_string(reward_xp)+" XP");
 }
 
 sf::Text& Quest::getNameText() {

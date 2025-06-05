@@ -1,15 +1,6 @@
 ﻿
 #include "Game.h"
 #include <iostream>
-//TODO
- 
-// ranges 
-// 
-// tla wygenerowane z czata podczas trwania misji i napis nazwy misji 
-// 
-//dodac wiecej kont i ogarnac multi logowanie na konta
-
-
 
 
 void Game::initVariables() { 
@@ -38,7 +29,7 @@ std::string Game:: formatPlayerLine(Player* p) {
         << " strenght: " << p->getBaseStrenght()
         << " dexterity: " << p->getBaseDexterity()
         << " intelligence: " << p->getBaseIntelligence()
-        << " durability: " << p->getBaseConstitution()
+        << " durability: " << p->getBaseDurability()
         << " luck: " << p->getBaseLuck()
         << " level: " << p->getLevel()
         << " gold: " << p->getGold()
@@ -82,7 +73,7 @@ void Game::saveToFileStats() {
     const std::string fileName = "Data/accounts.txt";
     std::ifstream in(fileName);
     if (!in.is_open()) {
-        std::cout << "Nie można otworzyć pliku do odczytu: " << fileName << std::endl;
+      //  std::cout << "Nie można otworzyć pliku do odczytu: " << fileName << std::endl;
         return;
     }
 
@@ -112,7 +103,7 @@ void Game::saveToFileStats() {
 
     std::ofstream out(fileName, std::ios::trunc);
     if (!out.is_open()) {
-        std::cout << "Nie można otworzyć pliku do zapisu: " << fileName <<std::endl;
+       // std::cout << "Nie można otworzyć pliku do zapisu: " << fileName <<std::endl;
         return;
     }
     for (const auto& ln : lines) {
@@ -127,7 +118,7 @@ void Game::saveToFileEquipment() {
     
     std::ifstream in(fileName);
     if (!in.is_open()) {
-        std::cout << "Nie można otworzyć pliku do odczytu: " << fileName << std::endl;
+       // std::cout << "Nie można otworzyć pliku do odczytu: " << fileName << std::endl;
         return;
     }
 
@@ -157,7 +148,7 @@ void Game::saveToFileEquipment() {
 
     std::ofstream out(fileName, std::ios::trunc);
     if (!out.is_open()) {
-        std::cout << "Nie można otworzyć pliku do zapisu: " << fileName << std::endl;
+       // std::cout << "Nie można otworzyć pliku do zapisu: " << fileName << std::endl;
         return;
     }
     for (const auto& ln : lines) {
@@ -295,7 +286,7 @@ sf::RenderWindow& Game::getWindow(){
 void Game::LogOut(){
 
     if (loggedInPlayer == nullptr) {
-        std::cout << "Nie ma zalogowanego gracza!" << std::endl;
+     //   std::cout << "Nie ma zalogowanego gracza!" << std::endl;
         
     }
     else {
@@ -319,8 +310,7 @@ void Game::LogOut(){
         }
     }
     if (arena_screen) {
-        arena_screen->clearEnemyDisplays();  // usunięcie wszystkich EnemyDisplay* i wyczyszczenie wektora
-        // (ewentualnie: arena_screen->enemies.clear(); – w zależności, czy jest publiczne)
+        arena_screen->clearEnemyDisplays(); 
     }
 
     setLoggedInPlayer(nullptr);
@@ -370,7 +360,6 @@ void Game::setItemChangedFlag(bool changed) {
 bool Game::validateFiles() {
     namespace fs = std::filesystem;
 
-    // 1. Wymagane foldery
     std::vector<std::string> requiredFolders = { "Data", "Textures", "Fonts" };
     for (const auto& dir : requiredFolders) {
         if (!fs::exists(dir) || !fs::is_directory(dir)) {
@@ -378,22 +367,20 @@ bool Game::validateFiles() {
         }
     }
 
-    // 2. Pliki tekstowe (bez rozszerzenia)
     std::vector<std::string> requiredTxt = {
         "accounts", "equipments", "Items", "quests", "enemies"
     };
 
-    // 3. Wymagane tekstury
     std::vector<std::string> requiredTextures = {
         "aren_background.png", "Arena_button.png", "bialy-przyc.png", "buty.png", "customksztalt.png", "czapka.png",
         "exit_button.png", "fight_background.png","kusza.png", "login_button.png", "login_menu.jpg", "logout_button.png", 
         "naszyjnik.png","navbar_clear.png", "pas.png", "pierscien.png", "player_button.png", "player_menu_background.png",
         "player_menu_background2.png", "quest_menu_background.png", "quests_button.png", "rekawice.png", "shop_button.png",
         "shop_refresh_btn.png", "test.png", "test2.png", "upgrade_stat_button.png",
-        "was.png", "wybor_postaci.png", "zbroja.png", 
+        "was.png", "wybor_postaci.png", "zbroja.png", "player_img1.png","player_img2.png","enemy_img1.png","enemy_img2.png",
+        "enemy_img3.png","enemy_img4.png","enemy_img5.png","enemy_img6.png"
     };
 
-    // 4. Regexy do walidacji treści
     std::map<std::string, std::regex> regexPatterns = {
         {"accounts", std::regex(R"(login:\s*(\w+)\s+pass:\s*(\w+)\s+image:\s*(\S+)\s+strenght:\s*(\d+)\s+dexterity:\s*(\d+)\s+intelligence:\s*(\d+)\s+durability:\s*(\d+)\s+luck:\s*(\d+)\s+level:\s*(\d+)\s+gold:\s*(\d+)\s+xp:\s*(\d+))")},
         {"equipments", std::regex(R"(login:\s*(\w+)\s+helmet:\s*(\d+)\s+shield:\s*(\d+)\s+gloves:\s*(\d+)\s+shoes:\s*(\d+)\s+weapon:\s*(\d+)\s+necklace:\s*(\d+)\s+belt:\s*(\d+)\s+ring:\s*(\d+)\s+luckyitem:\s*(\d+)\s+slot1:\s*(\d+)\s+slot2:\s*(\d+)\s+slot3:\s*(\d+)\s+slot4:\s*(\d+)\s+slot5:\s*(\d+)\s+slot6:\s*(\d+)\s+slot7:\s*(\d+)\s+slot8:\s*(\d+)\s+shop1:\s*(\d+)\s+shop2:\s*(\d+)\s+shop3:\s*(\d+)\s+shop4:\s*(\d+)\s+shop5:\s*(\d+)\s+shop6:\s*(\d+))")},
@@ -402,29 +389,26 @@ bool Game::validateFiles() {
         {"enemies", std::regex(R"(login:\s*(\w+)\s+number:\s*(\d+)\s+name:\s*([^\s]+)\s+level:\s*(\d+)\s+strength:\s*(\d+)\s+dexterity:\s*(\d+)\s+intelligence:\s*(\d+)\s+durability:\s*(\d+)\s+luck:\s*(\d+)\s+reward:\s*(\d+)\s+image:\s*([^\s]+))")}
     };
 
-    // 5. Wyszukaj pliki z folderu Data/
     std::map<std::string, fs::path> foundDataFiles;
     for (const auto& entry : fs::directory_iterator("Data")) {
         if (!entry.is_regular_file()) continue;
-        std::string name = entry.path().stem().string(); // bez rozszerzenia
+        std::string name = entry.path().stem().string(); 
         foundDataFiles[name] = entry.path();
     }
 
-    // 6. Sprawdź obecność wymaganych plików
     for (const auto& required : requiredTxt) {
         if (foundDataFiles.find(required) == foundDataFiles.end()) {
             throw std::runtime_error("Brakuje pliku: Data/" + required);
         }
     }
 
-    // 7. Walidacja regex
     for (const auto& [name, path] : foundDataFiles) {
         auto it = regexPatterns.find(name);
         if (it == regexPatterns.end()) continue;
 
         std::ifstream file(path);
         if (!file.is_open()) {
-            throw std::runtime_error("Nie można otworzyć pliku: " + path.string());
+            throw std::runtime_error("Nie mozna otworzyc pliku: " + path.string());
         }
 
         std::string line;
@@ -433,12 +417,11 @@ bool Game::validateFiles() {
             ++lineNumber;
             std::string trimmed = std::regex_replace(line, std::regex(R"(^\s+|\s+$)"), "");
             if (!trimmed.empty() && !std::regex_match(trimmed, it->second)) {
-                throw std::runtime_error("Błąd regex w pliku " + name + ", linia " + std::to_string(lineNumber) + ": " + trimmed);
+                throw std::runtime_error("Blad regex w pliku " + name + ", linia " + std::to_string(lineNumber) + ": " + trimmed);
             }
         }
     }
 
-    // 8. Sprawdzenie obecności tekstur
     for (const auto& tex : requiredTextures) {
         std::string texPath = "Textures/" + tex;
         if (!fs::exists(texPath)) {
@@ -446,7 +429,6 @@ bool Game::validateFiles() {
         }
     }
 
-    // 9. Sprawdzenie czcionki
     std::string fontPath = "Fonts/RodrigoTypo - Tobi Pro ExtraBold.otf";
     if (!fs::exists(fontPath)) {
         throw std::runtime_error("Brakuje czcionki: " + fontPath);

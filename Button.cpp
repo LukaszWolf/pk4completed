@@ -11,6 +11,7 @@ Button::Button(sf::Vector2f position, sf::Vector2f size, std::string texture_fil
     }
     else if (texture_file_name_default == "") {
         shape.setTexture(nullptr);
+        shape.setFillColor(sf::Color(255, 255, 255, 0));
     }
     else {
         shape.setTexture(&tex);
@@ -22,7 +23,7 @@ Button::Button(sf::Vector2f position, sf::Vector2f size, std::string texture_fil
     }
     shape.setSize(size);
     shape.setPosition(position);
-    shape.setFillColor(sf::Color::White); 
+//    shape.setFillColor(sf::Color::White); 
 
     hover.setSize(size);
     hover.setPosition(position);
@@ -33,7 +34,7 @@ Button::Button(const std::string& label, sf::Vector2f position, sf::Vector2f siz
 {
  
     if (!tex.loadFromFile(texture_file_name_default) and texture_file_name_default != "") {
-        std::cerr << "Nie mozna zaladowac tekstury: " << texture_file_name_default << std::endl;
+      //  std::cout << "Nie mozna zaladowac tekstury: " << texture_file_name_default << std::endl;
     }
     else if (texture_file_name_default == "") {
         shape.setTexture(nullptr);
@@ -78,7 +79,7 @@ void Button::setHover(sf::Color hover) {
 
 void Button::setFont(){
     if (!font.loadFromFile("Fonts / RodrigoTypo - Tobi Pro ExtraBold.otf")) {
-        std::cout << "Nie mo�na zaladowac czcionki!" << std::endl;
+    //    std::cout << "Nie moona zaladowac czcionki!" << std::endl;
     }
     this->font = font;
 }
@@ -86,7 +87,7 @@ void Button::setFont(){
 void Button::setTex(std::string texture_file_name){
 
     if (!this->tex.loadFromFile(texture_file_name)) {
-        std::cout << "Nie mo�na za�adowa� tekstury: " << texture_file_name << std::endl;
+   //     std::cout << "Nie mozna za�adowac tekstury: " << texture_file_name << std::endl;
     }
 
 }
@@ -151,7 +152,7 @@ ItemSlot::ItemSlot(std::string slot_name, sf::Vector2f position, sf::Vector2f si
     setPosition(position);
     setSize(size);
     if (!tex.loadFromFile(texture_file_name_default) and texture_file_name_default != "") {
-        std::cerr << "Nie mozna zaladowac tekstury: " << texture_file_name_default << std::endl;
+     //   std::cout << "Nie mozna zaladowac tekstury: " << texture_file_name_default << std::endl;
     }
     else if (texture_file_name_default == "") {
         shape.setTexture(nullptr);
@@ -231,7 +232,6 @@ void ItemSlot::tryStartDrag(const sf::Vector2i& mousePos, const sf::Event& event
 void ItemSlot::swapItems(ItemSlot* source, ItemSlot* target, Player* loggedInUser) {
     Item* temp = source->getCurrentItem();
 
-    // Jeśli kupujemy (source=shop), nie zamieniamy, tylko przenosimy
     if (source->getNameID().rfind("shop", 0) == 0) {
         target->setItem(temp);
         source->setItem(nullptr);
@@ -265,40 +265,33 @@ bool ItemSlot::endDrag(const sf::Vector2i& mousePos,
     ItemSlot* source,
     Player* loggedInUser)
 {
-    // 1) Tylko na zwolnienie lewego przycisku
     if (event.type != sf::Event::MouseButtonReleased ||
         event.mouseButton.button != sf::Mouse::Left)
     {
         return false;
     }
 
-    // 2) Musi być faktycznie drag z innego slotu
     if (!source->getIsItemDragged() || source == this)
         return false;
 
-    // 3) Kursor musi być nad tym slotem
     if (!this->isHovered(mousePos))
         return false;
 
-    // 4) Nie obsługujemy swapów ze slotu sklepu ani na slot sklepu
     bool srcIsShop = (source->getNameID().rfind("shop", 0) == 0);
     bool dstIsShop = (this->getNameID().rfind("shop", 0) == 0);
     if (srcIsShop || dstIsShop)
         return false;
 
-    // 5) Musi istnieć przedmiot źródłowy
     Item* srcItem = source->getCurrentItem();
     if (!srcItem)
         return false;
 
-    // 6) Kompatybilność: srcItem → this slot
     if (allowed_item_type != ItemType::ANY and
         srcItem->getType() != allowed_item_type)
     {
         return false;
     }
 
-    // 7) Kompatybilność: dstItem → source slot
     Item* dstItem = this->getCurrentItem();
     ItemType srcAllowed = source->getAllowedItemType();
     if (dstItem and srcAllowed != ItemType::ANY and
@@ -307,7 +300,6 @@ bool ItemSlot::endDrag(const sf::Vector2i& mousePos,
         return false;
     }
 
-    // 8) Wszystko gra — zamień przedmioty
     swapItems(source, this, loggedInUser);
     return true;
 }

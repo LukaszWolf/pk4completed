@@ -10,7 +10,7 @@ private:
     sf::Text lvl_text, strength, dexterity, intelligence, durability, luck, reward;
     sf::Font font;
     sf::Vector2f position;
-    
+
 
 public:
     EnemyDisplay(const sf::Vector2f& basePos);

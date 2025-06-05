@@ -119,9 +119,6 @@
     <ClInclude Include="DescriptionBox.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="QuestPage.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
     <ClInclude Include="Quest.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>

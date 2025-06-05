@@ -6,25 +6,17 @@
 #include <vector>
 #include "Quest.h"
 #include "Enemy.h"
-//enum class Mount {
-//	COW,
-//	HORSE,
-//	TIGER,
-//	DRAGON,
-//	NONE
-//};
-
 class Game;
 
 class Player : public Character
 {
-	std:: string password;
+	std::string password;
 
 	int current_xp, xp_to_next_level;
 	int gold;
 
 	int armor, strength, dexterity, intelligence, durability, luck;
-	bool stat_changed;	
+	bool stat_changed;
 	std::map<std::string, Item*> equipment;
 	Quest* quest1;
 	Quest* quest2;
@@ -38,8 +30,8 @@ class Player : public Character
 	bool refresh_enemies_flag;
 public:
 	Player();
-	Player(std::string nam, std::string img, int strength, int dexterity, int intelligence, int durability,int luck, 
-		int level, int gold,int xp, Game&game); 
+	Player(std::string nam, std::string img, int strength, int dexterity, int intelligence, int durability, int luck,
+		int level, int gold, int xp, Game& game);
 	~Player();
 
 	void loadQuestsFromFile();
@@ -52,12 +44,12 @@ public:
 	void upgradeStrength();
 	void upgradeDexterity();
 	void upgradeIntelligence();
-	void upgradeConstitution();
+	void upgradeDurability();
 	void upgradeLuck();
 
 	void initEquipment();
 
-	float attack() override final ;
+	float attack() override final;
 	int calculateHP() override final;
 	int calculateDamage() override final;
 	int calculateEvasion() override final;
@@ -68,16 +60,14 @@ public:
 	virtual int getStrength() override final;
 	virtual int getDexterity() override final;
 	virtual int getIntelligence()override final;
-	virtual int getConstitution() override final;
+	virtual int getDurability() override final;
 	virtual int getLuck() override final;
 	virtual int getArmor() override final;
 
-	void printEquipment();
 	void printStats();
 	Quest* getQuest(int num) const;
 	Enemy* getArenaEnemy(int num) const;
-	void setQuests(std::vector<Quest*>& newQuests); // opcjonalnie setter
-
+	void setQuests(std::vector<Quest*>& newQuests); 
 	void setArenaEnemies(std::vector<Enemy*>& newEnemies);
 
 	Item* getItem(const std::string& slot_name) const;
@@ -105,4 +95,4 @@ public:
 
 };
 
-#endif
+#endif	

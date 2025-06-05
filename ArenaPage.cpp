@@ -5,18 +5,18 @@ ArenaPage::ArenaPage(Game& game) : Page(game) {
     navBar = new NavBar(400, 1080, game);
     content_area = new ContentArea(1520, 1080, game, "Textures/aren_background.png", 400, 0);
     loggedInUser = nullptr;
-    this->fight_button1 = new Button({ 700.f,800.f }, { 324.f, 80.f }, "Textures/arena_button.png", [this]() {
+    this->fight_button1 = new Button({ 513.f,350.f }, { 400.f, 620.f }, "", [this]() {
         startFight(getEnemy(0));
         });
-    this->fight_button2 = new Button({ 1100.f,800.f }, { 324.f, 80.f }, "Textures/arena_button.png",[this]() {
+    this->fight_button2 = new Button({ 960.f,350.f }, { 400.f, 620.f }, "",[this]() {
             startFight(getEnemy(1));
         });
-    this->fight_button3 = new Button({ 1500.f,800.f }, { 324.f, 80.f }, "Textures/arena_button.png", [this]() {
+    this->fight_button3 = new Button({ 1407.f,350.f }, { 400.f, 620.f }, "", [this]() {
         startFight(getEnemy(2));
         });
 
     if (!font.loadFromFile("Fonts/RodrigoTypo - Tobi Pro ExtraBold.otf")) {
-        std::cout << "Nie mo¿na za³adowaæ czcionki!" << std::endl;
+   //     std::cout << "Nie mo¿na za³adowaæ czcionki!" << std::endl;
     }
 
 }
@@ -24,8 +24,9 @@ ArenaPage::ArenaPage(Game& game) : Page(game) {
 ArenaPage::~ArenaPage() {
     delete navBar;
     delete content_area;
-    //for (auto enemy : enemies) delete enemy;
-    for (auto disp : enemyDisplays) delete disp;
+    for (auto disp : enemyDisplays){
+        delete disp;
+    }
     delete fight_button1;
     delete fight_button2;
     delete fight_button3;
@@ -63,16 +64,12 @@ void ArenaPage::handleEvents(sf::Event event, sf::RenderWindow& window) {
 }
 
 void ArenaPage::startFight(Enemy*enemy) {
-    //refreshEnemies(1); trzeba wlaczac po zakonczonej walce zeby przeciwnika nie odswiezylo albo najpierw ustawiac przeciwnika w fight page
     loggedInUser->setActiveEnemy(enemy);
     game_ref.setFightActiveFlag(true);
     game_ref.changePage(GameState::FIGHT_PAGE);
-
-
 }
 
-Enemy* ArenaPage::getEnemy(int num)
-{
+Enemy* ArenaPage::getEnemy(int num){
     if (enemies.size() == 3) {
         return enemies[num];
     }
@@ -84,11 +81,6 @@ void ArenaPage::refreshEnemies(bool generate_new_enemies) {
     if (!loggedInUser) return;
 
     if(!enemies.empty()){
-        //for (auto enemy : enemies) {
-        //    if (enemy) {
-        //        delete enemy;
-        //    }
-        //}
         enemies.clear();
     }
     if(!enemyDisplays.empty()){
@@ -98,33 +90,32 @@ void ArenaPage::refreshEnemies(bool generate_new_enemies) {
     }
 
    
-  
-
-    
     std::vector<sf::Vector2f> positions = {
-        {600.f, 200.f}, {1050.f, 200.f}, {1500.f, 200.f}
+        {572.f, 399.f}, {1018.f, 399.f}, {1465.f, 399.f}
     };
     std::vector < std::string > image_paths{
-        "Textures/test.png", "Textures/test2.png"
+        "Textures/enemy_img1.png","Textures/enemy_img2.png","Textures/enemy_img3.png","Textures/enemy_img4.png",
+        "Textures/enemy_img5.png","Textures/enemy_img6.png",
     };
     if(generate_new_enemies){
         static std::mt19937 rng{ std::random_device{}() };
-        static std::uniform_int_distribution<int> image_id(0, 1);
+        static std::uniform_int_distribution<int> image_id(0, 5);
         static std::uniform_real_distribution<float> stat_multiplier(0.8f, 1.2f);
         static std::uniform_real_distribution<float> level_multiplier(0.9f, 1.1f);
 
        for (int i = 0; i < 3; ++i) {
+           int img = image_id(rng) - i;
             Enemy* enemy = new Enemy(
             "Przeciwnik" + std::to_string(i + 1),
-            image_paths[image_id(rng)], loggedInUser->getStrength() * stat_multiplier(rng),
+            image_paths[img], loggedInUser->getStrength() * stat_multiplier(rng),
             loggedInUser->getDexterity() * stat_multiplier(rng),
             loggedInUser->getIntelligence() * stat_multiplier(rng),
-            loggedInUser->getConstitution() * stat_multiplier(rng),
+            loggedInUser->getDurability() * stat_multiplier(rng),
             loggedInUser->getLuck() * stat_multiplier(rng), loggedInUser->getLevel() * level_multiplier(rng),
             loggedInUser->getLevel() * level_multiplier(rng) / 2);
             enemy->getCharacterTexture().loadFromFile(enemy->getImgName());
             enemies.push_back(enemy);
-
+            image_paths.erase(image_paths.begin() + img);
             EnemyDisplay* disp = new EnemyDisplay(positions[i]);
             disp->setEnemyData(*enemy);
             enemyDisplays.push_back(disp);
@@ -134,7 +125,6 @@ void ArenaPage::refreshEnemies(bool generate_new_enemies) {
         if (loggedInUser){
         for (int i = 0; i < 3; ++i) {
             EnemyDisplay* disp = new EnemyDisplay(positions[i]);
-          //  enemies.clear();
             enemies.push_back(loggedInUser->getArenaEnemy(i));
             disp->setEnemyData(*enemies[i]);
             enemyDisplays.push_back(disp);
@@ -150,10 +140,5 @@ void ArenaPage::clearEnemyDisplays() {
         delete ed;
     }
     enemyDisplays.clear();
-
-    // Jeœli to konieczne, to tak¿e usuñ surowe wskaŸniki do Enemy*:
-    //for (Enemy* e : enemies) {
-    //    delete e;
-    //}
     enemies.clear();
 }

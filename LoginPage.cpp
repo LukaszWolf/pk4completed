@@ -6,8 +6,9 @@
 LoginPage::LoginPage(Game& game) : Page(game) {
 
     this->content_area = new ContentArea(1920, 1080, game, "Textures/wybor_postaci.png", 0, 0);
-    this->username_text_box = new TextBox(1370, 320, 354, 90, "Enter nickname");
-    this->password_text_box = new TextBox(1370, 450, 354, 90, "Enter password");
+    this->username_text_box = new TextBox(1370, 320, 354, 90, "Login");
+    this->password_text_box = new TextBox(1370, 450, 354, 90, "Haslo");
+    password_text_box->setPasswordMode(true);
     this->login_button = new Button("LOGIN", { 1390, 580 }, { 314, 80 }, "Textures/login_button.png");
 }
 
@@ -18,7 +19,9 @@ LoginPage::~LoginPage() {
     delete this->login_button;
 
     for (auto btn : account_btns) {
-        if (btn != nullptr) delete btn;
+        if (btn != nullptr) {
+            delete btn;
+        }
     }
     
 }
@@ -51,7 +54,6 @@ void LoginPage::handleEvents(sf::Event event, sf::RenderWindow& window) {
         pair.second->handleEvents(mousePos, event);
         if (pair.second->isClicked(mousePos, event)) {
             LogIn(pair.first);
-            std::cout << pair.first->getName();
             break;
         }
     }
@@ -81,7 +83,7 @@ void LoginPage::handleEvents(sf::Event event, sf::RenderWindow& window) {
 std::string LoginPage::userExistLine(std::string nam, std::string file_name) {
     std::ifstream file(file_name);
     if (!file) {
-        std::cout << "Nie mozna otworzyc pliku: " << file_name << std::endl;
+       // std::cout << "Nie mozna otworzyc pliku: " << file_name << std::endl;
         return "";
     }
     std::string line;
@@ -92,7 +94,7 @@ std::string LoginPage::userExistLine(std::string nam, std::string file_name) {
         }
     }
     return "";
-    std::cout << "nie udalo sie zalogowac";
+  //  std::cout << "nie udalo sie zalogowac";
 }
 
 bool LoginPage::isValidLogin(std::string login) {
@@ -123,7 +125,7 @@ void LoginPage::addAccountToAvailable(std::string stats, std::string password) {
     std::smatch matches;
 
     if (!std::regex_search(stats, matches, pattern)) {
-        std::cout << "blad regex";
+     //   std::cout << "blad regex";
         return;
     }
     std::string login = matches[1];
@@ -133,14 +135,10 @@ void LoginPage::addAccountToAvailable(std::string stats, std::string password) {
     int intel = std::stoi(matches[6]);
     int con = std::stoi(matches[7]);
     int luck = std::stoi(matches[8]);
-    //CharacterClass char_class = static_cast<CharacterClass>(std::stoi(matches[9]));
     int level = std::stoi(matches[9]);
-    //Mount mount = static_cast<Mount>(std::stoi(matches[11]));
-    //int thirst = std::stoi(matches[12]);
     int gold = std::stoi(matches[10]);
     int xp = std::stoi(matches[11]);
-    //int mushrooms = std::stoi(matches[14]);
-    //int hourglasses = std::stoi(matches[15]);
+
 
     Player* new_player = new Player(login, image, str, dex, intel, con, luck, 
         level, gold,xp,game_ref);
@@ -149,19 +147,14 @@ void LoginPage::addAccountToAvailable(std::string stats, std::string password) {
 
     
     if (insertion_order.size() > MAX_PLAYERS) {
-        // znajdź ostatniego
         auto it = insertion_order.end();
         --it;
         Player* oldest = *it;
-        // usuń go z listy
         insertion_order.erase(it);
-        // usuń przycisk
         userToButtonMap.erase(oldest);
-        // zwolnij pamięć po Playerze, jeśli to konieczne
         delete oldest;
     }
 
-    // teraz ustaw pozycje przycisków dla do 6 graczy:
     float basePosX = 250;
     float spacingX = 270;
     float basePosY = 280;
@@ -173,11 +166,9 @@ void LoginPage::addAccountToAvailable(std::string stats, std::string password) {
         sf::Vector2f pos{ basePosX + x * spacingX, basePosY + y * spacingY };
 
         if (userToButtonMap.find(player) == userToButtonMap.end()) {
-            // tworzymy nowy przycisk
             userToButtonMap[player] = std::make_unique<Button>(login, pos, sf::Vector2f{ 160,160 }, image);
         }
         else {
-            // tylko przesunięcie istniejącego
             userToButtonMap[player]->setPosition(pos);
         }
         ++i;
@@ -190,8 +181,6 @@ void LoginPage::updateEquipment(std::string filename, Player* player) {
 
 void LoginPage::LogIn(Player* player) {
     if(player){
-        std::cout << "[Game] ustawiam gracza " << player->getName()
-        << ", czy quest aktywny: " << player->getIsQuestInProgress() << "\n";
         game_ref.setLoggedInPlayer(player);
 
         game_ref.changePage(GameState::PLAYER_MENU);

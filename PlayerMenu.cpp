@@ -5,19 +5,19 @@
 
 
 PlayerMenu::PlayerMenu(Game& game) : Page(game) {
-    //item_changed_flag = false;
+
+    dragSource = nullptr;
     this->loggedInUser = game_ref.getLoggedInPlayer();
   
     this->navBar = new NavBar(400, 1080, game);
     this->player_managment_area = new ContentArea(1520, 1080, game, "Textures/player_menu_background2.png", 400, 0);
-    this->xp_bar = new XPLoadingBar(600.f, 432.f, 365.f, 33.f, sf::Color::Blue);  // Nowy pasek postępu
+    this->xp_bar = new XPLoadingBar(600.f, 432.f, 365.f, 33.f, sf::Color::Blue);  
 
     this->helmet_slot = new ItemSlot("helmet",{ 439, 47 }, {129,129}, ItemType::HELMET, "Textures/test.png", []() {}, nullptr);
     this->armor_slot = new ItemSlot("shield",{ 439, 197 }, {129,129}, ItemType::ARMOR, "Textures/test.png", []() {}, nullptr);
     this->gloves_slot = new ItemSlot("gloves",{ 439, 348 }, {129,129}, ItemType::GLOVES, "Textures/test.png", []() {}, nullptr);
     this->shoes_slot = new ItemSlot("shoes",{ 439, 499 }, {129,129}, ItemType::SHOES, "Textures/test.png", []() {}, nullptr);
     this->weapon_slot = new ItemSlot("weapon",{ 721, 500 }, {129,129}, ItemType::WEAPON, "Textures/test.png", []() {}, nullptr);
-  //  this->weapon_effect_area = new ItemSlot({ 802,484 }, { 126,126 }, ItemType::HELMET, "test.png", []() {}, nullptr);
     this->necklace_slot = new ItemSlot("necklace",{ 1004, 47 }, {129,129}, ItemType::NECKLACE, "Textures/test.png", []() {}, nullptr);
     this->belt_slot = new ItemSlot("belt", {1004, 198}, {129,129}, ItemType::BELT, "Textures/test.png", []() {}, nullptr);
     this->ring_slot = new ItemSlot("ring",{ 1004, 349 }, {129,129}, ItemType::RING, "Textures/test.png", []() {}, nullptr);
@@ -52,7 +52,6 @@ PlayerMenu::PlayerMenu(Game& game) : Page(game) {
     img_shape = new sf::RectangleShape();
     img_shape->setPosition({ 594,33 });
     img_shape->setSize({ 382,382 });
-   // img_shape->setFillColor(sf::Color::Red);
 
     strength_text = new sf::Text ("0",textfont,20);
     dexterity_text = new sf::Text("0", textfont, 20);
@@ -218,14 +217,6 @@ void PlayerMenu::draw(sf::RenderWindow& window) {
     if (player_managment_area != nullptr) {
         player_managment_area->draw(window);
     }
-    //if (loggedInUser) {
-    //    // Oblicz postęp paska XP
-    //    float progressValue = static_cast<float>(loggedInUser->getXP()) / static_cast<float>(loggedInUser->getLevel());
-    //    xp_bar->updateProgress(progressValue, 1.0f);
-
-    //    // Rysowanie paska XP
-    //    xp_bar->draw(window);
-    //}
 
     for (auto slot : allSlots) {
         if (slot) {
@@ -312,7 +303,6 @@ void PlayerMenu::draw(sf::RenderWindow& window) {
 void PlayerMenu::handleEvents(sf::Event event, sf::RenderWindow& window) {
     sf::Vector2i mouse_pos = sf::Mouse::getPosition(window);
 
-    // 1) NavBar
     if (navBar) {
         navBar->handleEvents(event, window);
     }
@@ -452,7 +442,6 @@ void PlayerMenu::handleEvents(sf::Event event, sf::RenderWindow& window) {
     }
 
     if (loggedInUser) {
-    //ulepszanie statystyk
     if (upgrade_strenght_btn) {
         upgrade_strenght_btn->handleEvents(mouse_pos, event);
         if (upgrade_strenght_btn->isClicked(mouse_pos, event)) {
@@ -477,7 +466,7 @@ void PlayerMenu::handleEvents(sf::Event event, sf::RenderWindow& window) {
     if (upgrade_durability_btn) {
         upgrade_durability_btn->handleEvents(mouse_pos, event);
         if (upgrade_durability_btn->isClicked(mouse_pos, event)) {
-            loggedInUser->upgradeConstitution();
+            loggedInUser->upgradeDurability();
             updateTextStats();
         }
     }
@@ -528,7 +517,7 @@ void PlayerMenu::updateSlots() {
     }
 
     else {
-//niezalogowany gracz ma wszystko na nullptr
+
         for (auto slot : allSlots) {
             slot->setItem(nullptr);
         }
@@ -543,7 +532,7 @@ void PlayerMenu::updateTextStats()
     strength_text->setString(std::to_string(loggedInUser->getStrength()));
     dexterity_text->setString(std::to_string(loggedInUser->getDexterity()));
     intelligence_text->setString(std::to_string(loggedInUser->getIntelligence()));
-    durability_text->setString(std::to_string(loggedInUser->getConstitution()));
+    durability_text->setString(std::to_string(loggedInUser->getDurability()));
     luck_text->setString(std::to_string(loggedInUser->getLuck()));
     armor_text->setString(std::to_string(loggedInUser->getArmor()));
 
@@ -564,19 +553,12 @@ void PlayerMenu::updateTextStats()
 
 void PlayerMenu::setLoggedInUser(Player* player) {
     this->loggedInUser = player;
-   // sf::Texture t;
     if(loggedInUser){
-        //std::cout << "GRACZ ZALOGOWANYYYYY" << std::endl;
 
-       /* if (!t.loadFromFile(loggedInUser->getImgName())) {
-            std::cout << "Loading player image texture from file failed" << std::endl;
-        }
-        else {*/
-            std::cout << "SETOWANIE TEXTURY GRACZA "<< loggedInUser->getImgName();
+     //       std::cout << "SETOWANIE TEXTURY GRACZA "<< loggedInUser->getImgName();
             this->img_shape->setTexture(&loggedInUser->getCharacterTexture());
             xp_bar->updateProgress(static_cast<float>(loggedInUser->getCurrentXP()),
                 static_cast<float>(loggedInUser->getXPToNextLevel()));
-        //}
         
         updateSlots();
         updateTextStats();
@@ -625,7 +607,7 @@ void PlayerMenu::refreshShop() {
         {"shop6",shop_slot6}, };
     std::ifstream file("Data/Items.txt");
     if (!file.is_open()) {
-        std::cout << "Nie mozna otworzyc pliku items"<< std::endl;
+     //   std::cout << "Nie mozna otworzyc pliku items"<< std::endl;
     }
 
     std::string line;
