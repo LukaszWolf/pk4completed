@@ -15,18 +15,18 @@ EnemyDisplay::EnemyDisplay(const sf::Vector2f& basePos)
         };
 
 
-    createText(lvl_text, 292.f);
-    createText(strength, 327.f);
-    createText(dexterity, 360.f);
-    createText(intelligence, 392.f);
-    createText(durability, 424.f);
-    createText(luck, 456.f);
+    createText(lvl_text, 294.f);
+    createText(strength, 329.f);
+    createText(dexterity, 364.f);
+    createText(intelligence, 399.f);
+    createText(durability, 434.f);
+    createText(luck, 469.f);
    // createText(reward, 540);
     reward = sf::Text();
     reward.setFont(font);
     reward.setCharacterSize(42);
     reward.setFillColor(sf::Color::White);
-    reward.setPosition(basePos.x + 230.f, basePos.y + 500.f);
+    reward.setPosition(basePos.x + 210.f, basePos.y + 510.f);
   
   
 }
@@ -40,7 +40,9 @@ void EnemyDisplay::setEnemyData(Enemy& enemy) {
         intelligence.setString(std::to_string(enemy.getIntelligence()));
         durability.setString(std::to_string(enemy.getDurability()));
         luck.setString(std::to_string(enemy.getLuck()));
-        reward.setString(std::to_string(enemy.getRewardGold()));
+        std::ostringstream oss;
+        oss << std::setw(3)  << enemy.getRewardGold();
+        reward.setString(oss.str());
     }
 }
 

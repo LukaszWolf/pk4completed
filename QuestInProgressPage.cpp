@@ -13,14 +13,15 @@ QuestInProgressPage::QuestInProgressPage(Game& game) : Page(game) {
     time_left_text.setString("");
     time_left_text.setPosition({ 1180.f,152.f });
 
-    skip_price_text.setCharacterSize(30);
-    skip_price_text.setString("100");
-    skip_price_text.setPosition({ 880.f,852.f });
+    skip_price_text.setCharacterSize(32);
+    skip_price_text.setString(": 100");
+    skip_price_text.setPosition({ 987.f,964.f });
     if (!font.loadFromFile("Fonts/RodrigoTypo - Tobi Pro ExtraBold.otf")) {
      //   std::cout << "Nie udalo sie wczytac tekstury!" << std::endl;
     }
     else {
         time_left_text.setFont(font);
+        skip_price_text.setFont(font);
     }
     loggedInUser = nullptr;
 }
@@ -140,7 +141,7 @@ void QuestInProgressPage::cancelQuest() {
     }
 
     current_quest->complete();
-    current_quest->setStartTime(std::chrono::system_clock::time_point{}); // zerowa wartoœæ czasu (epoch)
+    current_quest->setStartTime(std::chrono::system_clock::time_point{}); 
 
     game_ref.getLoggedInPlayer()->setQuestInProgress(false);
     game_ref.getLoggedInPlayer()->saveQuestsToFile();

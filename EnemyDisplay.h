@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Enemy.h"
+#include <iomanip>
 
 class EnemyDisplay {
 private:

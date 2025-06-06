@@ -99,12 +99,12 @@ void ArenaPage::refreshEnemies(bool generate_new_enemies) {
     };
     if(generate_new_enemies){
         static std::mt19937 rng{ std::random_device{}() };
-        static std::uniform_int_distribution<int> image_id(0, 5);
+        static std::uniform_int_distribution<int> image_id(0, 3);
         static std::uniform_real_distribution<float> stat_multiplier(0.8f, 1.2f);
         static std::uniform_real_distribution<float> level_multiplier(0.9f, 1.1f);
 
        for (int i = 0; i < 3; ++i) {
-           int img = image_id(rng) - i;
+           int img = image_id(rng);
             Enemy* enemy = new Enemy(
             "Przeciwnik" + std::to_string(i + 1),
             image_paths[img], loggedInUser->getStrength() * stat_multiplier(rng),
