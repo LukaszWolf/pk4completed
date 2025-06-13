@@ -60,6 +60,7 @@ public:
     void cancelDrag();
     bool endDrag(const sf::Vector2i& mousePos, const sf::Event& event, ItemSlot* source, Player* loggedInUSer);
     void swapItems(ItemSlot* source, ItemSlot* target, Player* loggedInUser);
+    void moveItem(sf::Vector2f& diff);
 
     std::string getNameID() const;
     ItemType getAllowedItemType() const;
@@ -68,8 +69,7 @@ public:
     Item* getCurrentItem() const;
     bool getIsItemDragged() const;
     void setIsItemDragged(bool dragging);
-    void moveItem(sf::Vector2f& diff);
-    sf::FloatRect getGlobalBounds() const;
+     sf::FloatRect getGlobalBounds() const;
 };
 
 #endif

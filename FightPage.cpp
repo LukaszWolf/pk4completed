@@ -65,7 +65,7 @@ void FightPage::draw(sf::RenderWindow& window) {
 
     if (!fight_initialized) {
         initFight();
-     //   std::cout << "inicjalizacja walki" << std::endl;
+     //   std::cout  << "inicjalizacja walki" << std::endl;
     }
 
     if (player_hp_bar) {

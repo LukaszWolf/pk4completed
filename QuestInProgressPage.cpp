@@ -160,8 +160,8 @@ void QuestInProgressPage::skipQuest() {
         }
     }
     if(current_quest){
-        loggedInUser->setGold(loggedInUser->getGold() + current_quest->getRewardGold());
-        loggedInUser->setCurrentXP(loggedInUser->getCurrentXP() + current_quest->getRewardXP() - 100);
+        loggedInUser->setGold(loggedInUser->getGold() + current_quest->getRewardGold()-100);
+        loggedInUser->setCurrentXP(loggedInUser->getCurrentXP() + current_quest->getRewardXP());
         game_ref.saveToFileStats();
     }
     current_quest->complete();
